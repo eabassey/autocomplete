@@ -6,16 +6,14 @@
 
 <div #container (click)="onMouseclick($event)" [ngStyle]="style" [class]="styleClass">
   <div>
-    <input #in type="text" [attr.aria-label]="selectedOption ? selectedOption.label : ' '" readonly (focus)="onInputFocus($event)"
+    <input #in type="text" readonly (focus)="onInputFocus($event)"
       role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)" [disabled]="disabled" [attr.tabindex]="tabindex"
       [attr.autofocus]="autofocus">
   </div>
   <label *ngIf="!editable && (label != null)">
-    <ng-container *ngIf="!selectedItemTemplate">{{label||'empty'}}</ng-container>
-    <ng-container *ngTemplateOutlet="selectedItemTemplate; context: {$implicit: selectedOption}"></ng-container>
+    <ng-container>{{label||'empty'}}</ng-container>
   </label>
-  <input #editableInput type="text" [attr.aria-label]="selectedOption ? selectedOption.label : ' '"
-    *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
+  <input #editableInput type="text" *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
     (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)">
   <i (click)="clear($event)" *ngIf="value != null && showClear && !disabled"></i>
   <div>
@@ -40,8 +38,7 @@
         </ng-container>
         <ng-template #itemslist let-options let-selectedOption="selectedOption">
           <li *ngFor="let option of options;let i=index" (click)="onItemClick($event, option)">
-            <span *ngIf="!itemTemplate">{{option.label||'empty'}}</span>
-            <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: option}"></ng-container>
+            <span>{{option.label||'empty'}}</span>
           </li>
         </ng-template>
         <li *ngIf="filter && optionsToDisplay && optionsToDisplay.length === 0">{{emptyFilterMessage}}</li>

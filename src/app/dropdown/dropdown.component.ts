@@ -82,10 +82,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 
 @Input() emptyFilterMessage: string = 'No results found';
 
-// @Input() autoZIndex: boolean = true;
-
-// @Input() baseZIndex: number = 0;
-
 @Input() showTransitionOptions: string = '225ms ease-out';
 
 @Input() hideTransitionOptions: string = '195ms ease-in';
