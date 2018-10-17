@@ -5,7 +5,7 @@ import {CommonModule} from '@angular/common';
 import {SelectItem} from '../utils/selectitem';
 import {SharedModule} from '../utils/shared';
 import {ObjectUtils} from '../utils/objectutils';
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
+import {NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule} from '@angular/forms';
 
 export const DROPDOWN_VALUE_ACCESSOR: any = {
 provide: NG_VALUE_ACCESSOR,
@@ -33,6 +33,11 @@ animations: [
 providers: [ObjectUtils,DROPDOWN_VALUE_ACCESSOR]
 })
 export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,ControlValueAccessor {
+
+
+selectedItem: string;
+showDropdownArea: boolean = false;
+
 
 @Input() selectList: string[] = [];
 
@@ -213,6 +218,15 @@ onItemClick(event, option) {
   setTimeout(() => {
       this.hide();
   }, 150);
+}
+
+selectDropdownItem(event) {
+    console.log(event.target.value);
+    if (event.target.value !== 'None') {
+        this.showDropdownArea = true;
+    } else {
+        this.showDropdownArea = false;
+    }
 }
 
 selectItem(event, option) {
@@ -746,7 +760,7 @@ ngOnDestroy() {
 }
 
 @NgModule({
-imports: [CommonModule,SharedModule],
+imports: [CommonModule,SharedModule, FormsModule],
 exports: [DropdownComponent,SharedModule],
 declarations: [DropdownComponent]
 })

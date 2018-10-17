@@ -1,47 +1,49 @@
 <div>
-  <select>
+  <select [(ngModel)]="selectedItem" (change)="selectDropdownItem($event)">
       <option *ngFor="let item of selectList" [value]="item">{{item}}</option>
   </select>
 </div>
 
-<div #container (click)="onMouseclick($event)" [ngStyle]="style" [class]="styleClass">
-  <div>
-    <input #in type="text" readonly (focus)="onInputFocus($event)"
-      role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)" [disabled]="disabled" [attr.tabindex]="tabindex"
-      [attr.autofocus]="autofocus">
-  </div>
-  <label *ngIf="!editable && (label != null)">
-    <ng-container>{{label||'empty'}}</ng-container>
-  </label>
-  <input #editableInput type="text" *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
-    (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)">
-  <i (click)="clear($event)" *ngIf="value != null && !disabled"></i>
-  <div>
-    <span [ngClass]="dropdownIcon"></span>
-  </div>
-  <div *ngIf="overlayVisible"
-  [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}"
-    (@overlayAnimation.start)="onOverlayAnimationStart($event)"
-    [ngStyle]="panelStyle"
-    [class]="panelStyleClass">
-    <div *ngIf="filter"
-    (input)="onFilter($event)"
-    (click)="$event.stopPropagation()">
-      <input #filter type="text" autocomplete="off" [value]="filterValue||''" [attr.placeholder]="filterPlaceholder" (keydown.enter)="$event.preventDefault()"
-        (keydown)="onKeydown($event, false)">
-    </div>
-    <div class="ui-dropdown-items-wrapper" [style.max-height]="scrollHeight||'auto'">
-      <ul class="ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">
-        <ng-container>
-          <ng-container *ngTemplateOutlet="itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}"></ng-container>
-        </ng-container>
-        <ng-template #itemslist let-options let-selectedOption="selectedOption">
-          <li *ngFor="let option of options;let i=index" (click)="onItemClick($event, option)">
-            <span>{{option.label||'empty'}}</span>
-          </li>
-        </ng-template>
-        <li *ngIf="filter && optionsToDisplay && optionsToDisplay.length === 0">{{emptyFilterMessage}}</li>
-      </ul>
-    </div>
-  </div>
-</div>
+<ng-container *ngIf="showDropdownArea">
+    <div #container (click)="onMouseclick($event)" [ngStyle]="style" [class]="styleClass">
+        <div>
+          <input #in type="text" readonly (focus)="onInputFocus($event)"
+            role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)" [disabled]="disabled" [attr.tabindex]="tabindex"
+            [attr.autofocus]="autofocus">
+        </div>
+        <!-- <label *ngIf="!editable && (label != null)">
+          <ng-container>{{label||'empty'}}</ng-container>
+        </label> -->
+        <input #editableInput type="text" *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
+          (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)">
+        <i (click)="clear($event)" *ngIf="value != null && !disabled"></i>
+        <div>
+          <span [ngClass]="dropdownIcon"></span>
+        </div>
+        <div *ngIf="overlayVisible"
+        [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}"
+          (@overlayAnimation.start)="onOverlayAnimationStart($event)"
+          [ngStyle]="panelStyle"
+          [class]="panelStyleClass">
+          <div *ngIf="filter"
+          (input)="onFilter($event)"
+          (click)="$event.stopPropagation()">
+            <input #filter type="text" autocomplete="off" [value]="filterValue||''" [attr.placeholder]="filterPlaceholder" (keydown.enter)="$event.preventDefault()"
+              (keydown)="onKeydown($event, false)">
+          </div>
+          <div class="ui-dropdown-items-wrapper" [style.max-height]="scrollHeight||'auto'">
+            <ul class="ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">
+              <ng-container>
+                <ng-container *ngTemplateOutlet="itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}"></ng-container>
+              </ng-container>
+              <ng-template #itemslist let-options let-selectedOption="selectedOption">
+                <li *ngFor="let option of options;let i=index" (click)="onItemClick($event, option)">
+                  <span>{{option.label||'empty'}}</span>
+                </li>
+              </ng-template>
+              <li *ngIf="filter && optionsToDisplay && optionsToDisplay.length === 0">{{emptyFilterMessage}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+</ng-container>
