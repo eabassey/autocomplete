@@ -41,8 +41,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 
 @Input() filter: boolean;
 
-@Input() name: string;
-
 @Input() style: any;
 
 @Input() panelStyle: any;
@@ -85,9 +83,9 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 
 @Input() emptyFilterMessage: string = 'No results found';
 
-@Input() autoZIndex: boolean = true;
+// @Input() autoZIndex: boolean = true;
 
-@Input() baseZIndex: number = 0;
+// @Input() baseZIndex: number = 0;
 
 @Input() showTransitionOptions: string = '225ms ease-out';
 
@@ -175,29 +173,29 @@ previousSearchChar: string;
 
 currentSearchChar: string;
 
-constructor(public el: ElementRef, public domHandler: DomHandler, public renderer: Renderer2, private cd: ChangeDetectorRef,
+constructor(public el: ElementRef, public renderer: Renderer2, private cd: ChangeDetectorRef,
           public objectUtils: ObjectUtils, public zone: NgZone) {}
 
 ngAfterContentInit() {
-  this.templates.forEach((item) => {
-      switch(item.getType()) {
-          case 'item':
-              this.itemTemplate = item.template;
-          break;
+//   this.templates.forEach((item) => {
+//       switch(item.getType()) {
+//           case 'item':
+//               this.itemTemplate = item.template;
+//           break;
 
-          case 'selectedItem':
-              this.selectedItemTemplate = item.template;
-          break;
+//           case 'selectedItem':
+//               this.selectedItemTemplate = item.template;
+//           break;
 
-          case 'group':
-              this.groupTemplate = item.template;
-          break;
+//           case 'group':
+//               this.groupTemplate = item.template;
+//           break;
 
-          default:
-              this.itemTemplate = item.template;
-          break;
-      }
-  });
+//           default:
+//               this.itemTemplate = item.template;
+//           break;
+//       }
+//   });
 }
 
 ngOnInit() {
@@ -285,10 +283,10 @@ ngAfterViewChecked() {
 
   if (this.selectedOptionUpdated && this.itemsWrapper) {
       this.updateDimensions();
-      let selectedItem = this.domHandler.findSingle(this.overlay, 'li.ui-state-highlight');
-      if (selectedItem) {
-          this.domHandler.scrollInView(this.itemsWrapper, this.domHandler.findSingle(this.overlay, 'li.ui-state-highlight'));
-      }
+    //   let selectedItem = this.domHandler.findSingle(this.overlay, 'li.ui-state-highlight');
+    //   if (selectedItem) {
+    //       this.domHandler.scrollInView(this.itemsWrapper, this.domHandler.findSingle(this.overlay, 'li.ui-state-highlight'));
+    //   }
       this.selectedOptionUpdated = false;
   }
 }
@@ -336,10 +334,10 @@ setDisabledState(val: boolean): void {
 
 updateDimensions() {
   if (this.el.nativeElement && this.el.nativeElement.children[0] && this.el.nativeElement.offsetParent) {
-      let select = this.domHandler.findSingle(this.el.nativeElement, 'select');
-      if (select && !this.style||(this.style && (!this.style['width']&&!this.style['min-width']))) {
-          this.el.nativeElement.children[0].style.width = select.offsetWidth + 30 + 'px';
-      }
+    //   let select = this.domHandler.findSingle(this.el.nativeElement, 'select');
+    //   if (select && !this.style||(this.style && (!this.style['width']&&!this.style['min-width']))) {
+    //       this.el.nativeElement.children[0].style.width = select.offsetWidth + 30 + 'px';
+    //   }
       this.dimensionsUpdated = true;
   }
 }
@@ -352,7 +350,7 @@ onMouseclick(event) {
   this.onClick.emit(event);
 
   this.selfClick = true;
-  this.clearClick = this.domHandler.hasClass(event.target, 'ui-dropdown-clear-icon');
+//   this.clearClick = this.domHandler.hasClass(event.target, 'ui-dropdown-clear-icon');
 
   if (!this.itemClick && !this.clearClick) {
       this.focusViewChild.nativeElement.focus();
@@ -401,19 +399,19 @@ onOverlayAnimationStart(event: AnimationEvent) {
   switch (event.toState) {
       case 'visible':
           this.overlay = event.element;
-          this.itemsWrapper = this.domHandler.findSingle(this.overlay, '.ui-dropdown-items-wrapper');
+        //   this.itemsWrapper = this.domHandler.findSingle(this.overlay, '.ui-dropdown-items-wrapper');
           this.appendOverlay();
-          if (this.autoZIndex) {
-              this.overlay.style.zIndex = String(this.baseZIndex + (++DomHandler.zindex));
-          }
+        //   if (this.autoZIndex) {
+        //       this.overlay.style.zIndex = String(this.baseZIndex + (++DomHandler.zindex));
+        //   }
           this.alignOverlay();
           this.bindDocumentClickListener();
 
           if (this.options && this.options.length) {
-              let selectedListItem = this.domHandler.findSingle(this.itemsWrapper, '.ui-dropdown-item.ui-state-highlight');
-              if (selectedListItem) {
-                  this.domHandler.scrollInView(this.itemsWrapper, selectedListItem);
-              }
+            //   let selectedListItem = this.domHandler.findSingle(this.itemsWrapper, '.ui-dropdown-item.ui-state-highlight');
+            //   if (selectedListItem) {
+            //       this.domHandler.scrollInView(this.itemsWrapper, selectedListItem);
+            //   }
           }
 
           this.onShow.emit(event);
@@ -430,10 +428,10 @@ appendOverlay() {
   if (this.appendTo) {
       if (this.appendTo === 'body')
           document.body.appendChild(this.overlay);
-      else
-          this.domHandler.appendChild(this.overlay, this.appendTo);
+    //   else
+    //       this.domHandler.appendChild(this.overlay, this.appendTo);
 
-      this.overlay.style.minWidth = this.domHandler.getWidth(this.containerViewChild.nativeElement) + 'px';
+    //   this.overlay.style.minWidth = this.domHandler.getWidth(this.containerViewChild.nativeElement) + 'px';
   }
 }
 
@@ -454,12 +452,12 @@ hide() {
 }
 
 alignOverlay() {
-  if (this.overlay) {
-      if (this.appendTo)
-          this.domHandler.absolutePosition(this.overlay, this.containerViewChild.nativeElement);
-      else
-          this.domHandler.relativePosition(this.overlay, this.containerViewChild.nativeElement);
-  }
+//   if (this.overlay) {
+//       if (this.appendTo)
+//           this.domHandler.absolutePosition(this.overlay, this.containerViewChild.nativeElement);
+//       else
+//           this.domHandler.relativePosition(this.overlay, this.containerViewChild.nativeElement);
+//   }
 }
 
 onInputFocus(event) {
@@ -764,16 +762,16 @@ activateFilter() {
   }
 }
 
-applyFocus(): void {
-  if (this.editable)
-      this.domHandler.findSingle(this.el.nativeElement, '.ui-dropdown-label.ui-inputtext').focus();
-  else
-      this.domHandler.findSingle(this.el.nativeElement, 'input[readonly]').focus();
-}
+// applyFocus(): void {
+// //   if (this.editable)
+// //       this.domHandler.findSingle(this.el.nativeElement, '.ui-dropdown-label.ui-inputtext').focus();
+// //   else
+// //       this.domHandler.findSingle(this.el.nativeElement, 'input[readonly]').focus();
+// }
 
-focus(): void {
-  this.applyFocus();
-}
+// focus(): void {
+//   this.applyFocus();
+// }
 
 bindDocumentClickListener() {
   if (!this.documentClickListener) {
