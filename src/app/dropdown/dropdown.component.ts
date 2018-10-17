@@ -31,10 +31,6 @@ animations: [
       transition('visible => void', animate('{{hideTransitionParams}}'))
   ])
 ],
-host: {
-  '[class.ui-inputwrapper-filled]': 'filled',
-  '[class.ui-inputwrapper-focus]': 'focused'
-},
 providers: [DomHandler,ObjectUtils,DROPDOWN_VALUE_ACCESSOR]
 })
 export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,ControlValueAccessor {
