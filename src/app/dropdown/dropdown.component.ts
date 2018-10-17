@@ -63,8 +63,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 
 @Input() tabindex: number;
 
-@Input() placeholder: string;
-
 @Input() filterPlaceholder: string;
 
 @Input() inputId: string;
@@ -84,8 +82,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 @Input() optionLabel: string;
 
 @Input() autoDisplayFirst: boolean = true;
-
-@Input() group: boolean;
 
 @Input() showClear: boolean;
 
@@ -322,7 +318,7 @@ resetFilter(): void {
 
 updateSelectedOption(val: any): void {
   this.selectedOption = this.findOption(val, this.optionsToDisplay);
-  if (this.autoDisplayFirst && !this.placeholder && !this.selectedOption && this.optionsToDisplay && this.optionsToDisplay.length && !this.editable) {
+  if (this.autoDisplayFirst && !this.selectedOption && this.optionsToDisplay && this.optionsToDisplay.length && !this.editable) {
       this.selectedOption = this.optionsToDisplay[0];
   }
   this.selectedOptionUpdated = true;
@@ -555,32 +551,12 @@ onKeydown(event: KeyboardEvent, search: boolean) {
               this.show();
           }
           else {
-              if (this.group) {
-                  let selectedItemIndex = this.selectedOption ? this.findOptionGroupIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
-
-                  if (selectedItemIndex !== -1) {
-                      let nextItemIndex = selectedItemIndex.itemIndex + 1;
-                      if (nextItemIndex < (this.optionsToDisplay[selectedItemIndex.groupIndex].items.length)) {
-                          this.selectItem(event, this.optionsToDisplay[selectedItemIndex.groupIndex].items[nextItemIndex]);
-                          this.selectedOptionUpdated = true;
-                      }
-                      else if (this.optionsToDisplay[selectedItemIndex.groupIndex + 1]) {
-                          this.selectItem(event, this.optionsToDisplay[selectedItemIndex.groupIndex + 1].items[0]);
-                          this.selectedOptionUpdated = true;
-                      }
-                  }
-                  else {
-                      this.selectItem(event, this.optionsToDisplay[0].items[0]);
-                  }
-              }
-              else {
                   let selectedItemIndex = this.selectedOption ? this.findOptionIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
                   let nextEnabledOption = this.findNextEnabledOption(selectedItemIndex);
                   if (nextEnabledOption) {
                       this.selectItem(event, nextEnabledOption);
                       this.selectedOptionUpdated = true;
                   }
-              }
           }
 
           event.preventDefault();
@@ -589,31 +565,12 @@ onKeydown(event: KeyboardEvent, search: boolean) {
 
       //up
       case 38:
-          if (this.group) {
-              let selectedItemIndex = this.selectedOption ? this.findOptionGroupIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
-              if (selectedItemIndex !== -1) {
-                  let prevItemIndex = selectedItemIndex.itemIndex - 1;
-                  if (prevItemIndex >= 0) {
-                      this.selectItem(event, this.optionsToDisplay[selectedItemIndex.groupIndex].items[prevItemIndex]);
-                      this.selectedOptionUpdated = true;
-                  }
-                  else if (prevItemIndex < 0) {
-                      let prevGroup = this.optionsToDisplay[selectedItemIndex.groupIndex - 1];
-                      if (prevGroup) {
-                          this.selectItem(event, prevGroup.items[prevGroup.items.length - 1]);
-                          this.selectedOptionUpdated = true;
-                      }
-                  }
-              }
-          }
-          else {
               let selectedItemIndex = this.selectedOption ? this.findOptionIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
               let prevEnabledOption = this.findPrevEnabledOption(selectedItemIndex);
               if (prevEnabledOption) {
                   this.selectItem(event, prevEnabledOption);
                   this.selectedOptionUpdated = true;
               }
-          }
 
           event.preventDefault();
       break;
@@ -666,14 +623,8 @@ search(event) {
       this.searchValue = this.searchValue ? this.searchValue + char : char;
 
   let newOption;
-  if (this.group) {
-      let searchIndex = this.selectedOption ? this.findOptionGroupIndex(this.selectedOption.value, this.optionsToDisplay) : {groupIndex: 0, itemIndex: 0};
-      newOption = this.searchOptionWithinGroup(searchIndex);
-  }
-  else {
       let searchIndex = this.selectedOption ? this.findOptionIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
       newOption = this.searchOption(++searchIndex);
-  }
 
   if (newOption) {
       this.selectItem(event, newOption);
@@ -775,7 +726,7 @@ findOptionGroupIndex(val: any, opts: any[]): any {
 }
 
 findOption(val: any, opts: any[], inGroup?: boolean): SelectItem {
-  if (this.group && !inGroup) {
+  if (!inGroup) {
       let opt: SelectItem;
       if (opts && opts.length) {
           for (let optgroup of opts) {
@@ -810,25 +761,7 @@ onFilter(event): void {
 activateFilter() {
   let searchFields: string[] = this.filterBy.split(',');
   if (this.options && this.options.length) {
-      if (this.group) {
-          let filteredGroups = [];
-          for (let optgroup of this.options) {
-              let filteredSubOptions = this.objectUtils.filter(optgroup.items, searchFields, this.filterValue);
-              if (filteredSubOptions && filteredSubOptions.length) {
-                  filteredGroups.push({
-                      label: optgroup.label,
-                      value: optgroup.value,
-                      items: filteredSubOptions
-                  });
-              }
-          }
-
-          this.optionsToDisplay = filteredGroups;
-      }
-      else {
-          this.optionsToDisplay = this.objectUtils.filter(this.options, searchFields, this.filterValue);
-      }
-
+      this.optionsToDisplay = this.objectUtils.filter(this.options, searchFields, this.filterValue);
       this.optionsChanged = true;
   }
 }

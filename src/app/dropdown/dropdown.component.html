@@ -1,34 +1,15 @@
-<div #container
-  (click)="onMouseclick($event)"
-  [ngStyle]="style"
-  [class]="styleClass">
+<div #container (click)="onMouseclick($event)" [ngStyle]="style" [class]="styleClass">
   <div *ngIf="autoWidth">
-    <select [attr.id]="selectId"
-    [required]="required"
-    [attr.name]="name"
-    [attr.aria-label]="selectedOption ? selectedOption.label : ' '"
+    <select [attr.id]="selectId" [required]="required" [attr.name]="name" [attr.aria-label]="selectedOption ? selectedOption.label : ' '"
       tabindex="-1" aria-hidden="true">
-      <option *ngIf="placeholder">{{placeholder}}</option>
-      <ng-container *ngIf="group">
-        <optgroup *ngFor="let option of options" [attr.label]="option.label">
-          <option *ngFor="let option of option.items" [value]="option.value" [selected]="selectedOption == option">{{option.label}}</option>
-          <optgroup>
-      </ng-container>
-      <ng-container *ngIf="!group">
+      <ng-container>
         <option *ngFor="let option of options" [value]="option.value" [selected]="selectedOption == option">{{option.label}}</option>
       </ng-container>
     </select>
   </div>
   <div>
-    <input #in [attr.id]="inputId"
-    type="text"
-    [attr.aria-label]="selectedOption ? selectedOption.label : ' '"
-    readonly (focus)="onInputFocus($event)"
-      role="listbox"
-      (blur)="onInputBlur($event)"
-      (keydown)="onKeydown($event, true)"
-      [disabled]="disabled"
-      [attr.tabindex]="tabindex"
+    <input #in [attr.id]="inputId" type="text" [attr.aria-label]="selectedOption ? selectedOption.label : ' '" readonly (focus)="onInputFocus($event)"
+      role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)" [disabled]="disabled" [attr.tabindex]="tabindex"
       [attr.autofocus]="autofocus">
   </div>
   <label *ngIf="!editable && (label != null)">
@@ -36,42 +17,21 @@
     <ng-container *ngTemplateOutlet="selectedItemTemplate; context: {$implicit: selectedOption}"></ng-container>
   </label>
   <label *ngIf="!editable && (label == null)">{{placeholder||'empty'}}</label>
-  <input #editableInput type="text"
-  [attr.aria-label]="selectedOption ? selectedOption.label : ' '"
-  class="ui-dropdown-label ui-inputtext ui-corner-all"
-    *ngIf="editable"
-    [disabled]="disabled"
-    [attr.placeholder]="placeholder"
-    (click)="onEditableInputClick($event)"
-    (input)="onEditableInputChange($event)"
-    (focus)="onEditableInputFocus($event)"
-    (blur)="onInputBlur($event)">
-  <i class="ui-dropdown-clear-icon pi pi-times"
-  (click)="clear($event)"
-  *ngIf="value != null && showClear && !disabled"></i>
+  <input #editableInput type="text" [attr.aria-label]="selectedOption ? selectedOption.label : ' '" class="ui-dropdown-label ui-inputtext ui-corner-all"
+    *ngIf="editable" [disabled]="disabled" [attr.placeholder]="placeholder" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
+    (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)">
+  <i class="ui-dropdown-clear-icon pi pi-times" (click)="clear($event)" *ngIf="value != null && showClear && !disabled"></i>
   <div>
     <span [ngClass]="dropdownIcon"></span>
   </div>
-  <div *ngIf="overlayVisible"
-  [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}"
-    (@overlayAnimation.start)="onOverlayAnimationStart($event)"
-    [ngStyle]="panelStyle"
-    [class]="panelStyleClass">
-    <div *ngIf="filter"
-    (input)="onFilter($event)"
-    (click)="$event.stopPropagation()">
-      <input #filter
-      type="text"
-      autocomplete="off"
-      [value]="filterValue||''"
-        [attr.placeholder]="filterPlaceholder"
-        (keydown.enter)="$event.preventDefault()"
+  <div *ngIf="overlayVisible" [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}"
+    (@overlayAnimation.start)="onOverlayAnimationStart($event)" [ngStyle]="panelStyle" [class]="panelStyleClass">
+    <div *ngIf="filter" (input)="onFilter($event)" (click)="$event.stopPropagation()">
+      <input #filter type="text" autocomplete="off" [value]="filterValue||''" [attr.placeholder]="filterPlaceholder" (keydown.enter)="$event.preventDefault()"
         (keydown)="onKeydown($event, false)">
       <span class="ui-dropdown-filter-icon pi pi-search"></span>
     </div>
-    <div
-    class="ui-dropdown-items-wrapper"
-    [style.max-height]="scrollHeight||'auto'">
+    <div class="ui-dropdown-items-wrapper" [style.max-height]="scrollHeight||'auto'">
       <ul class="ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">
         <ng-container *ngIf="group">
           <ng-template ngFor let-optgroup [ngForOf]="optionsToDisplay">
@@ -85,11 +45,8 @@
         <ng-container *ngIf="!group">
           <ng-container *ngTemplateOutlet="itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}"></ng-container>
         </ng-container>
-        <ng-template #itemslist
-        let-options let-selectedOption="selectedOption">
-          <li *ngFor="let option of options;let i=index"
-          (click)="onItemClick($event, option)"
-          [ngClass]="{'ui-dropdown-item ui-corner-all':true,
+        <ng-template #itemslist let-options let-selectedOption="selectedOption">
+          <li *ngFor="let option of options;let i=index" (click)="onItemClick($event, option)" [ngClass]="{'ui-dropdown-item ui-corner-all':true,
                                     'ui-state-highlight':(selectedOption == option),
                                     'ui-state-disabled':(option.disabled),
                                     'ui-dropdown-item-empty':!option.label||option.label.length === 0}">
