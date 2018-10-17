@@ -62,8 +62,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 
 @Input() filterPlaceholder: string;
 
-@Input() selectId: string;
-
 @Input() dataKey: string;
 
 @Input() filterBy: string = 'label';
@@ -77,8 +75,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 @Input() optionLabel: string;
 
 @Input() autoDisplayFirst: boolean = true;
-
-@Input() showClear: boolean;
 
 @Input() emptyFilterMessage: string = 'No results found';
 

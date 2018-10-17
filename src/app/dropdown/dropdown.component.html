@@ -15,7 +15,7 @@
   </label>
   <input #editableInput type="text" *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
     (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)">
-  <i (click)="clear($event)" *ngIf="value != null && showClear && !disabled"></i>
+  <i (click)="clear($event)" *ngIf="value != null && !disabled"></i>
   <div>
     <span [ngClass]="dropdownIcon"></span>
   </div>
@@ -29,7 +29,6 @@
     (click)="$event.stopPropagation()">
       <input #filter type="text" autocomplete="off" [value]="filterValue||''" [attr.placeholder]="filterPlaceholder" (keydown.enter)="$event.preventDefault()"
         (keydown)="onKeydown($event, false)">
-      <span class="ui-dropdown-filter-icon pi pi-search"></span>
     </div>
     <div class="ui-dropdown-items-wrapper" [style.max-height]="scrollHeight||'auto'">
       <ul class="ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">
