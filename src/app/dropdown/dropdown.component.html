@@ -24,25 +24,21 @@
   <div>
     <span [ngClass]="dropdownIcon"></span>
   </div>
-  <div *ngIf="overlayVisible" [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}"
-    (@overlayAnimation.start)="onOverlayAnimationStart($event)" [ngStyle]="panelStyle" [class]="panelStyleClass">
-    <div *ngIf="filter" (input)="onFilter($event)" (click)="$event.stopPropagation()">
+  <div *ngIf="overlayVisible"
+  [@overlayAnimation]="{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}"
+    (@overlayAnimation.start)="onOverlayAnimationStart($event)"
+    [ngStyle]="panelStyle"
+    [class]="panelStyleClass">
+    <div *ngIf="filter"
+    (input)="onFilter($event)"
+    (click)="$event.stopPropagation()">
       <input #filter type="text" autocomplete="off" [value]="filterValue||''" [attr.placeholder]="filterPlaceholder" (keydown.enter)="$event.preventDefault()"
         (keydown)="onKeydown($event, false)">
       <span class="ui-dropdown-filter-icon pi pi-search"></span>
     </div>
     <div class="ui-dropdown-items-wrapper" [style.max-height]="scrollHeight||'auto'">
       <ul class="ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">
-        <ng-container *ngIf="group">
-          <ng-template ngFor let-optgroup [ngForOf]="optionsToDisplay">
-            <li class="ui-dropdown-item-group">
-              <span *ngIf="!groupTemplate">{{optgroup.label||'empty'}}</span>
-              <ng-container *ngTemplateOutlet="groupTemplate; context: {$implicit: optgroup}"></ng-container>
-            </li>
-            <ng-container *ngTemplateOutlet="itemslist; context: {$implicit: optgroup.items, selectedOption: selectedOption}"></ng-container>
-          </ng-template>
-        </ng-container>
-        <ng-container *ngIf="!group">
+        <ng-container>
           <ng-container *ngTemplateOutlet="itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}"></ng-container>
         </ng-container>
         <ng-template #itemslist let-options let-selectedOption="selectedOption">
