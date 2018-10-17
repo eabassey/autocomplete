@@ -26,7 +26,10 @@ export class AppComponent {
 
   groupedCars: any[];
 
+  partners: string[];
+
   constructor() {
+      this.partners = ['None', 'Jet', 'Edgars'];
       this.cities = [
           {name: 'New York', code: 'NY'},
           {name: 'Rome', code: 'RM'},

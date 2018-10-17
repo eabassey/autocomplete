@@ -35,6 +35,8 @@ providers: [DomHandler,ObjectUtils,DROPDOWN_VALUE_ACCESSOR]
 })
 export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,ControlValueAccessor {
 
+@Input() selectList: string[] = [];
+
 @Input() scrollHeight: string = '200px';
 
 @Input() filter: boolean;
@@ -53,8 +55,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 
 @Input() readonly: boolean;
 
-@Input() autoWidth: boolean = true;
-
 @Input() required: boolean;
 
 @Input() editable: boolean;
@@ -64,8 +64,6 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 @Input() tabindex: number;
 
 @Input() filterPlaceholder: string;
-
-@Input() inputId: string;
 
 @Input() selectId: string;
 
@@ -270,7 +268,7 @@ selectItem(event, option) {
 }
 
 ngAfterViewChecked() {
-  if (this.autoWidth && !this.dimensionsUpdated) {
+  if (!this.dimensionsUpdated) {
       this.updateDimensions();
   }
 
@@ -337,7 +335,7 @@ setDisabledState(val: boolean): void {
 }
 
 updateDimensions() {
-  if (this.autoWidth && this.el.nativeElement && this.el.nativeElement.children[0] && this.el.nativeElement.offsetParent) {
+  if (this.el.nativeElement && this.el.nativeElement.children[0] && this.el.nativeElement.offsetParent) {
       let select = this.domHandler.findSingle(this.el.nativeElement, 'select');
       if (select && !this.style||(this.style && (!this.style['width']&&!this.style['min-width']))) {
           this.el.nativeElement.children[0].style.width = select.offsetWidth + 30 + 'px';
