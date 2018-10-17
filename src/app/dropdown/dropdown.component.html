@@ -16,7 +16,6 @@
     <ng-container *ngIf="!selectedItemTemplate">{{label||'empty'}}</ng-container>
     <ng-container *ngTemplateOutlet="selectedItemTemplate; context: {$implicit: selectedOption}"></ng-container>
   </label>
-  <!-- <label *ngIf="!editable && (label == null)">{{placeholder||'empty'}}</label> -->
   <input #editableInput type="text" [attr.aria-label]="selectedOption ? selectedOption.label : ' '"
     *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
     (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)">
@@ -42,10 +41,7 @@
           <ng-container *ngTemplateOutlet="itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}"></ng-container>
         </ng-container>
         <ng-template #itemslist let-options let-selectedOption="selectedOption">
-          <li *ngFor="let option of options;let i=index" (click)="onItemClick($event, option)" [ngClass]="{'ui-dropdown-item ui-corner-all':true,
-                                    'ui-state-highlight':(selectedOption == option),
-                                    'ui-state-disabled':(option.disabled),
-                                    'ui-dropdown-item-empty':!option.label||option.label.length === 0}">
+          <li *ngFor="let option of options;let i=index" (click)="onItemClick($event, option)">
             <span *ngIf="!itemTemplate">{{option.label||'empty'}}</span>
             <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: option}"></ng-container>
           </li>
