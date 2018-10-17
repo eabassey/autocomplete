@@ -16,11 +16,11 @@
     <ng-container *ngIf="!selectedItemTemplate">{{label||'empty'}}</ng-container>
     <ng-container *ngTemplateOutlet="selectedItemTemplate; context: {$implicit: selectedOption}"></ng-container>
   </label>
-  <label *ngIf="!editable && (label == null)">{{placeholder||'empty'}}</label>
-  <input #editableInput type="text" [attr.aria-label]="selectedOption ? selectedOption.label : ' '" class="ui-dropdown-label ui-inputtext ui-corner-all"
-    *ngIf="editable" [disabled]="disabled" [attr.placeholder]="placeholder" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
+  <!-- <label *ngIf="!editable && (label == null)">{{placeholder||'empty'}}</label> -->
+  <input #editableInput type="text" [attr.aria-label]="selectedOption ? selectedOption.label : ' '"
+    *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
     (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)">
-  <i class="ui-dropdown-clear-icon pi pi-times" (click)="clear($event)" *ngIf="value != null && showClear && !disabled"></i>
+  <i (click)="clear($event)" *ngIf="value != null && showClear && !disabled"></i>
   <div>
     <span [ngClass]="dropdownIcon"></span>
   </div>
