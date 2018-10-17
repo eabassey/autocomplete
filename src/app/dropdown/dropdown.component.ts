@@ -17,7 +17,6 @@ multi: true
 @Component({
 selector: 'p-dropdown',
 templateUrl: 'dropdown.component.html',
-styleUrls: ['dropdown.component.css'],
 animations: [
   trigger('overlayAnimation', [
       state('void', style({
