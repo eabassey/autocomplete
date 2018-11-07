@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SelectItem} from './selectitem';
+// import {SelectItem} from './selectitem';
 
 @Injectable()
 export class ObjectUtils {
@@ -123,17 +123,17 @@ export class ObjectUtils {
         }
     }
 
-    public generateSelectItems(val: any[], field: string): SelectItem[] {
-        let selectItems: SelectItem[];
-        if(val && val.length) {
-            selectItems = [];
-            for(let item of val) {
-                selectItems.push({label: this.resolveFieldData(item, field), value: item});
-            }
-        }
+    // public generateSelectItems(val: any[], field: string): SelectItem[] {
+    //     let selectItems: SelectItem[];
+    //     if(val && val.length) {
+    //         selectItems = [];
+    //         for(let item of val) {
+    //             selectItems.push({label: this.resolveFieldData(item, field), value: item});
+    //         }
+    //     }
 
-        return selectItems;
-    }
+    //     return selectItems;
+    // }
 
     public insertIntoOrderedArray(item: any, index: number, arr: any[], sourceArr: any[]): void {
         if(arr.length > 0) {

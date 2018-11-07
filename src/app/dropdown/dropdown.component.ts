@@ -1,4 +1,4 @@
-import {NgModule,Component,ElementRef,OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,Input,Output,Renderer2,EventEmitter,ContentChildren,
+import {NgModule,Component,ElementRef,OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,Input,Output,Renderer2,EventEmitter,
   ViewChild,forwardRef,ChangeDetectorRef,NgZone} from '@angular/core';
 import {trigger,state,style,transition,animate,AnimationEvent} from '@angular/animations';
 import {CommonModule} from '@angular/common';
