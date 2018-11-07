@@ -8,6 +8,8 @@
 
 
 <ng-container *ngIf="showDropdownArea">
+
+  <!--Main Input-->
   <div #container (click)="onMouseclick($event)" [ngStyle]="style" [class]="styleClass">
     <div>
       <input #in type="text" readonly (focus)="onInputFocus($event)" [value]="selectedOption[optionDisplayProperty]" role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)"
@@ -28,7 +30,7 @@
       (@overlayAnimation.start)="onOverlayAnimationStart($event)" [ngStyle]="panelStyle" [class]="panelStyleClass">
 
       <!-- Filter Input -->
-      <div *ngIf="filter" (input)="onFilter($event)" (click)="$event.stopPropagation()">
+      <div (input)="onFilter($event)" (click)="$event.stopPropagation()">
         <input #filter type="text" autocomplete="off" [value]="filterValue||''" [attr.placeholder]="filterPlaceholder" (keydown.enter)="$event.preventDefault()"
           (keydown)="onKeydown($event, false)">
       </div>

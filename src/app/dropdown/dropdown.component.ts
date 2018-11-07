@@ -1,11 +1,11 @@
 import {NgModule,Component,ElementRef,OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,Input,Output,Renderer2,EventEmitter,
   ViewChild,forwardRef,ChangeDetectorRef,NgZone} from '@angular/core';
-import {trigger,state,style,transition,animate,AnimationEvent} from '@angular/animations';
+import {AnimationEvent} from '@angular/animations';
 import {CommonModule} from '@angular/common';
-import {SelectItem} from '../utils/selectitem';
 import {SharedModule} from '../utils/shared';
 import {ObjectUtils} from '../utils/objectutils';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule} from '@angular/forms';
+import { animationTrigger } from '../utils/animations';
 
 export const DROPDOWN_VALUE_ACCESSOR: any = {
 provide: NG_VALUE_ACCESSOR,
@@ -16,20 +16,7 @@ multi: true
 @Component({
 selector: 'fs-dropdown',
 templateUrl: 'dropdown.component.html',
-animations: [
-  trigger('overlayAnimation', [
-      state('void', style({
-          transform: 'translateY(5%)',
-          opacity: 0
-      })),
-      state('visible', style({
-          transform: 'translateY(0)',
-          opacity: 1
-      })),
-      transition('void => visible', animate('{{showTransitionParams}}')),
-      transition('visible => void', animate('{{hideTransitionParams}}'))
-  ])
-],
+animations: [animationTrigger],
 providers: [ObjectUtils,DROPDOWN_VALUE_ACCESSOR]
 })
 export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,ControlValueAccessor {
@@ -44,7 +31,7 @@ showDropdownArea: boolean = false;
 
 @Input() scrollHeight: string = '200px';
 
-@Input() filter: boolean;
+// @Input() appendTo;
 
 @Input() style: any;
 
@@ -56,13 +43,9 @@ showDropdownArea: boolean = false;
 
 @Input() disabled: boolean;
 
-@Input() readonly: boolean;
-
 @Input() required: boolean;
 
 @Input() editable: boolean;
-
-@Input() appendTo: any;
 
 @Input() tabindex: number;
 
@@ -178,8 +161,8 @@ ngOnInit() {
 }
 
 set options(val: any[]) {
-  let opts = this.optionLabel ? this.objectUtils.generateSelectItems(val, this.optionLabel) : val;
-  this._options = opts;
+//   let opts = this.optionLabel ? this.objectUtils.generateSelectItems(val, this.optionLabel) : val;
+  this._options = val;
   this.optionsToDisplay = this._options;
   this.updateSelectedOption(this.value);
   this.optionsChanged = true;
@@ -266,10 +249,7 @@ ngAfterViewChecked() {
 }
 
 writeValue(value: any): void {
-  if (this.filter) {
-      this.resetFilter();
-  }
-
+    this.resetFilter();
   this.value = value;
   this.updateSelectedOption(value);
   this.updateEditableLabel();
@@ -313,7 +293,7 @@ updateDimensions() {
 }
 
 onMouseclick(event) {
-  if (this.disabled||this.readonly) {
+  if (this.disabled) {
       return;
   }
 
@@ -368,7 +348,7 @@ onOverlayAnimationStart(event: AnimationEvent) {
   switch (event.toState) {
       case 'visible':
           this.overlay = event.element;
-          this.appendOverlay();
+        //   this.appendOverlay();
           this.bindDocumentClickListener();
           this.onShow.emit(event);
       break;
@@ -380,23 +360,23 @@ onOverlayAnimationStart(event: AnimationEvent) {
   }
 }
 
-appendOverlay() {
-  if (this.appendTo) {
-      if (this.appendTo === 'body')
-          document.body.appendChild(this.overlay);
-  }
-}
+// appendOverlay() {
+//   if (this.appendTo) {
+//       if (this.appendTo === 'body')
+//           document.body.appendChild(this.overlay);
+//   }
+// }
 
-restoreOverlayAppend() {
-  if (this.overlay && this.appendTo) {
-      this.el.nativeElement.appendChild(this.overlay);
-  }
-}
+// restoreOverlayAppend() {
+//   if (this.overlay && this.appendTo) {
+//       this.el.nativeElement.appendChild(this.overlay);
+//   }
+// }
 
 hide() {
   this.overlayVisible = false;
 
-  if (this.filter && this.resetFilterOnHide) {
+  if ( this.resetFilterOnHide) {
       this.resetFilter();
   }
 
@@ -479,7 +459,7 @@ findNextEnabledOption(index) {
 }
 
 onKeydown(event: KeyboardEvent, search: boolean) {
-  if (this.readonly || !this.optionsToDisplay || this.optionsToDisplay.length === null) {
+  if (!this.optionsToDisplay || this.optionsToDisplay.length === null) {
       return;
   }
 
@@ -525,7 +505,7 @@ onKeydown(event: KeyboardEvent, search: boolean) {
 
       //enter
       case 13:
-          if (!this.filter || (this.optionsToDisplay && this.optionsToDisplay.length > 0)) {
+          if (this.optionsToDisplay && this.optionsToDisplay.length > 0) {
               this.hide();
           }
 
@@ -664,9 +644,9 @@ findOptionGroupIndex(val: any, opts: any[]): any {
   }
 }
 
-findOption(val: any, opts: any[], inGroup?: boolean): SelectItem {
+findOption(val: any, opts: any[], inGroup?: boolean) {
   if (!inGroup) {
-      let opt: SelectItem;
+      let opt;
       if (opts && opts.length) {
           for (let optgroup of opts) {
               opt = this.findOption(val, optgroup.items, true);
@@ -755,7 +735,7 @@ onOverlayHide() {
 }
 
 ngOnDestroy() {
-  this.restoreOverlayAppend();
+//   this.restoreOverlayAppend();
   this.onOverlayHide();
 }
 }
