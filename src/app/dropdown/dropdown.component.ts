@@ -1,5 +1,5 @@
 import {NgModule,Component,ElementRef,OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,Input,Output,Renderer2,EventEmitter,ContentChildren,
-  QueryList,ViewChild,TemplateRef,forwardRef,ChangeDetectorRef,NgZone} from '@angular/core';
+  ViewChild,forwardRef,ChangeDetectorRef,NgZone} from '@angular/core';
 import {trigger,state,style,transition,animate,AnimationEvent} from '@angular/animations';
 import {CommonModule} from '@angular/common';
 import {SelectItem} from '../utils/selectitem';
@@ -14,7 +14,7 @@ multi: true
 };
 
 @Component({
-selector: 'p-dropdown',
+selector: 'fs-dropdown',
 templateUrl: 'dropdown.component.html',
 animations: [
   trigger('overlayAnimation', [

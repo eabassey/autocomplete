@@ -1,17 +1,9 @@
 
 <h3>Content with Filters</h3>
-<p-dropdown [options]="cars"
+<fs-dropdown [options]="cars"
 [selectList]="partners"
 [(ngModel)]="selectedCar2"
 [style]="{'width':'150px'}"
 filter="true">
-    <ng-template let-item pTemplate="selectedItem">
-        <span style="vertical-align:middle; margin-left: .5em">{{item.label}}</span>
-    </ng-template>
-    <ng-template let-car pTemplate="item">
-        <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-            <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
-        </div>
-    </ng-template>
-</p-dropdown>
+</fs-dropdown>
 <p>Selected Car: {{selectedCar2||'none'}}</p>
