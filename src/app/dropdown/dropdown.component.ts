@@ -38,6 +38,7 @@ export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,
 selectedItem: string;
 showDropdownArea: boolean = false;
 
+@Input() optionDisplayProperty = 'id';
 
 @Input() selectList: string[] = [];
 

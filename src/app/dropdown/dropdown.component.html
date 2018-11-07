@@ -10,7 +10,7 @@
 <ng-container *ngIf="showDropdownArea">
   <div #container (click)="onMouseclick($event)" [ngStyle]="style" [class]="styleClass">
     <div>
-      <input #in type="text" readonly (focus)="onInputFocus($event)" [value]="selectedOption.label" role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)"
+      <input #in type="text" readonly (focus)="onInputFocus($event)" [value]="selectedOption[optionDisplayProperty]" role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)"
         [disabled]="disabled" [attr.tabindex]="tabindex" [attr.autofocus]="autofocus">
     </div>
     <!-- <label *ngIf="!editable && (label != null)">

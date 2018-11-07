@@ -8,10 +8,8 @@ import { SelectItem } from './utils/selectitem';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
- 
-  cars: SelectItem[];
 
-  selectedCar1: string;
+  cars: SelectItem[];
 
   selectedCar2: string = 'BMW';
 
