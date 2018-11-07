@@ -1,4 +1,4 @@
-import {NgModule,Component,ElementRef,OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,Input,Output,Renderer2,EventEmitter,
+import {NgModule,Component,ElementRef,OnInit,AfterViewInit,AfterViewChecked,OnDestroy,Input,Output,Renderer2,EventEmitter,
   ViewChild,forwardRef,ChangeDetectorRef,NgZone} from '@angular/core';
 import {AnimationEvent} from '@angular/animations';
 import {CommonModule} from '@angular/common';
@@ -19,7 +19,7 @@ templateUrl: 'dropdown.component.html',
 animations: [animationTrigger],
 providers: [ObjectUtils,DROPDOWN_VALUE_ACCESSOR]
 })
-export class DropdownComponent implements OnInit,AfterViewInit,AfterContentInit,AfterViewChecked,OnDestroy,ControlValueAccessor {
+export class DropdownComponent implements OnInit,AfterViewInit,AfterViewChecked,OnDestroy,ControlValueAccessor {
 
 
 selectedItem: string;
@@ -30,8 +30,6 @@ showDropdownArea: boolean = false;
 @Input() selectList: string[] = [];
 
 @Input() scrollHeight: string = '200px';
-
-// @Input() appendTo;
 
 @Input() style: any;
 
@@ -45,8 +43,6 @@ showDropdownArea: boolean = false;
 
 @Input() required: boolean;
 
-@Input() editable: boolean;
-
 @Input() tabindex: number;
 
 @Input() filterPlaceholder: string;
@@ -57,13 +53,7 @@ showDropdownArea: boolean = false;
 
 @Input() autofocus: boolean;
 
-@Input() resetFilterOnHide: boolean = false;
-
 @Input() dropdownIcon: string = 'pi pi-caret-down';
-
-@Input() optionLabel: string;
-
-@Input() autoDisplayFirst: boolean = true;
 
 @Input() emptyFilterMessage: string = 'No results found';
 
@@ -89,8 +79,6 @@ showDropdownArea: boolean = false;
 
 @ViewChild('in') focusViewChild: ElementRef;
 
-@ViewChild('editableInput') editableInputViewChild: ElementRef;
-
 overlay: HTMLDivElement;
 
 itemsWrapper: HTMLDivElement;
@@ -107,8 +95,6 @@ onModelTouched: Function = () => {};
 
 optionsToDisplay: any[];
 
-hover: boolean;
-
 focused: boolean;
 
 filled: boolean;
@@ -119,8 +105,6 @@ documentClickListener: any;
 
 optionsChanged: boolean;
 
-panel: HTMLDivElement;
-
 dimensionsUpdated: boolean;
 
 selfClick: boolean;
@@ -128,8 +112,6 @@ selfClick: boolean;
 itemClick: boolean;
 
 clearClick: boolean;
-
-hoveredItem: any;
 
 selectedOptionUpdated: boolean;
 
@@ -148,8 +130,6 @@ currentSearchChar: string;
 constructor(public el: ElementRef, public renderer: Renderer2, private cd: ChangeDetectorRef,
           public objectUtils: ObjectUtils, public zone: NgZone) {}
 
-ngAfterContentInit() {
-}
 
 ngOnInit() {
   this.optionsToDisplay = this.options;
@@ -161,7 +141,6 @@ ngOnInit() {
 }
 
 set options(val: any[]) {
-//   let opts = this.optionLabel ? this.objectUtils.generateSelectItems(val, this.optionLabel) : val;
   this._options = val;
   this.optionsToDisplay = this._options;
   this.updateSelectedOption(this.value);
@@ -173,21 +152,12 @@ set options(val: any[]) {
 }
 
 ngAfterViewInit() {
-  if (this.editable) {
-      this.updateEditableLabel();
-  }
 
   this.updateDimensions();
 }
 
 get label(): string {
   return (this.selectedOption ? this.selectedOption.label : null);
-}
-
-updateEditableLabel(): void {
-  if (this.editableInputViewChild && this.editableInputViewChild.nativeElement) {
-      this.editableInputViewChild.nativeElement.value = (this.selectedOption ? this.selectedOption.label : this.value||'');
-  }
 }
 
 onItemClick(event, option) {
@@ -219,7 +189,6 @@ selectItem(event, option) {
       this.value = option.value;
 
       this.onModelChange(this.value);
-      this.updateEditableLabel();
       this.onChange.emit({
           originalEvent: event,
           value: this.value
@@ -252,7 +221,6 @@ writeValue(value: any): void {
     this.resetFilter();
   this.value = value;
   this.updateSelectedOption(value);
-  this.updateEditableLabel();
   this.updateFilledState();
   this.cd.markForCheck();
 }
@@ -268,7 +236,7 @@ resetFilter(): void {
 
 updateSelectedOption(val: any): void {
   this.selectedOption = this.findOption(val, this.optionsToDisplay);
-  if (this.autoDisplayFirst && !this.selectedOption && this.optionsToDisplay && this.optionsToDisplay.length && !this.editable) {
+  if (!this.selectedOption && this.optionsToDisplay && this.optionsToDisplay.length) {
       this.selectedOption = this.optionsToDisplay[0];
   }
   this.selectedOptionUpdated = true;
@@ -348,7 +316,6 @@ onOverlayAnimationStart(event: AnimationEvent) {
   switch (event.toState) {
       case 'visible':
           this.overlay = event.element;
-        //   this.appendOverlay();
           this.bindDocumentClickListener();
           this.onShow.emit(event);
       break;
@@ -360,25 +327,10 @@ onOverlayAnimationStart(event: AnimationEvent) {
   }
 }
 
-// appendOverlay() {
-//   if (this.appendTo) {
-//       if (this.appendTo === 'body')
-//           document.body.appendChild(this.overlay);
-//   }
-// }
-
-// restoreOverlayAppend() {
-//   if (this.overlay && this.appendTo) {
-//       this.el.nativeElement.appendChild(this.overlay);
-//   }
-// }
 
 hide() {
   this.overlayVisible = false;
-
-  if ( this.resetFilterOnHide) {
-      this.resetFilter();
-  }
+  this.resetFilter();
 
   this.cd.markForCheck();
 }
@@ -724,7 +676,6 @@ clear(event: Event) {
       value: this.value
   });
   this.updateSelectedOption(this.value);
-  this.updateEditableLabel();
   this.updateFilledState();
 }
 
@@ -735,7 +686,6 @@ onOverlayHide() {
 }
 
 ngOnDestroy() {
-//   this.restoreOverlayAppend();
   this.onOverlayHide();
 }
 }

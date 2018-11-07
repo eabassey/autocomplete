@@ -15,11 +15,6 @@
       <input #in type="text" readonly (focus)="onInputFocus($event)" [value]="selectedOption[optionDisplayProperty]" role="listbox" (blur)="onInputBlur($event)" (keydown)="onKeydown($event, true)"
         [disabled]="disabled" [attr.tabindex]="tabindex" [attr.autofocus]="autofocus">
     </div>
-    <!-- <label *ngIf="!editable && (label != null)">
-          <ng-container>{{label||'empty'}}</ng-container>
-        </label> -->
-    <!-- <input #editableInput type="text" *ngIf="editable" [disabled]="disabled" (click)="onEditableInputClick($event)" (input)="onEditableInputChange($event)"
-      (focus)="onEditableInputFocus($event)" (blur)="onInputBlur($event)"> -->
     <i (click)="clear($event)" *ngIf="value != null && !disabled"></i>
     <div>
       <span [ngClass]="dropdownIcon"></span>
