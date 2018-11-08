@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SelectItem } from './utils/selectitem';
 
 
 @Component({
@@ -9,9 +8,9 @@ import { SelectItem } from './utils/selectitem';
 })
 export class AppComponent {
 
-  cars: SelectItem[];
+  cars: any[];
 
-  selectedCar2: string = 'BMW';
+  selectedCar: string = 'BMW';
 
   partners: string[];
 

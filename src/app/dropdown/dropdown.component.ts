@@ -1,10 +1,8 @@
-import {NgModule,Component,ElementRef,OnInit,AfterViewInit,AfterViewChecked,OnDestroy,Input,Output,Renderer2,EventEmitter,
+import {Component,ElementRef,OnInit,OnDestroy,Input,Output,Renderer2,EventEmitter,
   ViewChild,forwardRef,ChangeDetectorRef,NgZone} from '@angular/core';
 import {AnimationEvent} from '@angular/animations';
-import {CommonModule} from '@angular/common';
-import {SharedModule} from '../utils/shared';
 import {ObjectUtils} from '../utils/objectutils';
-import {NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule} from '@angular/forms';
+import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import { animationTrigger } from '../utils/animations';
 
 export const DROPDOWN_VALUE_ACCESSOR: any = {
@@ -19,7 +17,7 @@ templateUrl: 'dropdown.component.html',
 animations: [animationTrigger],
 providers: [ObjectUtils,DROPDOWN_VALUE_ACCESSOR]
 })
-export class DropdownComponent implements OnInit,AfterViewInit,AfterViewChecked,OnDestroy,ControlValueAccessor {
+export class DropdownComponent implements OnInit,OnDestroy,ControlValueAccessor {
 
 
 selectedItem: string;
@@ -105,8 +103,6 @@ documentClickListener: any;
 
 optionsChanged: boolean;
 
-dimensionsUpdated: boolean;
-
 selfClick: boolean;
 
 itemClick: boolean;
@@ -151,15 +147,6 @@ set options(val: any[]) {
   }
 }
 
-ngAfterViewInit() {
-
-  this.updateDimensions();
-}
-
-get label(): string {
-  return (this.selectedOption ? this.selectedOption.label : null);
-}
-
 onItemClick(event, option) {
   this.itemClick = true;
 
@@ -193,27 +180,6 @@ selectItem(event, option) {
           originalEvent: event,
           value: this.value
       });
-  }
-}
-
-ngAfterViewChecked() {
-  if (!this.dimensionsUpdated) {
-      this.updateDimensions();
-  }
-
-  if (this.optionsChanged && this.overlayVisible) {
-      this.optionsChanged = false;
-
-      this.zone.runOutsideAngular(() => {
-          setTimeout(() => {
-              this.updateDimensions();
-          }, 1);
-      });
-  }
-
-  if (this.selectedOptionUpdated && this.itemsWrapper) {
-      this.updateDimensions();
-      this.selectedOptionUpdated = false;
   }
 }
 
@@ -254,12 +220,6 @@ setDisabledState(val: boolean): void {
   this.disabled = val;
 }
 
-updateDimensions() {
-  if (this.el.nativeElement && this.el.nativeElement.children[0] && this.el.nativeElement.offsetParent) {
-      this.dimensionsUpdated = true;
-  }
-}
-
 onMouseclick(event) {
   if (this.disabled) {
       return;
@@ -287,26 +247,6 @@ onMouseclick(event) {
   }
 }
 
-onEditableInputClick(event) {
-  this.itemClick = true;
-  this.bindDocumentClickListener();
-}
-
-onEditableInputFocus(event) {
-  this.focused = true;
-  this.hide();
-  this.onFocus.emit(event);
-}
-
-onEditableInputChange(event) {
-  this.value = event.target.value;
-  this.updateSelectedOption(this.value);
-  this.onModelChange(this.value);
-  this.onChange.emit({
-      originalEvent: event,
-      value: this.value
-  });
-}
 
 show() {
   this.overlayVisible = true;
@@ -446,15 +386,6 @@ onKeydown(event: KeyboardEvent, search: boolean) {
           event.preventDefault();
       break;
 
-      //space
-      case 32:
-      case 32:
-          if (!this.overlayVisible){
-              this.show();
-              event.preventDefault();
-          }
-      break;
-
       //enter
       case 13:
           if (this.optionsToDisplay && this.optionsToDisplay.length > 0) {
@@ -524,36 +455,8 @@ searchOption(index) {
 searchOptionInRange(start, end) {
   for (let i = start; i < end; i++) {
       let opt = this.optionsToDisplay[i];
-      if (opt.label.toLowerCase().startsWith(this.searchValue.toLowerCase())) {
+      if (opt[this.optionDisplayProperty].toLowerCase().startsWith(this.searchValue.toLowerCase())) {
           return opt;
-      }
-  }
-
-  return null;
-}
-
-searchOptionWithinGroup(index) {
-  let option;
-
-  if (this.searchValue) {
-      for (let i = index.groupIndex; i < this.optionsToDisplay.length; i++) {
-          for (let j = (index.groupIndex === i) ? (index.itemIndex + 1) : 0; j < this.optionsToDisplay[i].items.length; j++) {
-              let opt = this.optionsToDisplay[i].items[j];
-              if (opt.label.toLowerCase().startsWith(this.searchValue.toLowerCase())) {
-                  return opt;
-              }
-          }
-      }
-
-      if (!option) {
-          for (let i = 0; i <= index.groupIndex; i++) {
-              for (let j = 0; j < ((index.groupIndex === i) ? index.itemIndex : this.optionsToDisplay[i].items.length); j++) {
-                  let opt = this.optionsToDisplay[i].items[j];
-                  if (opt.label.toLowerCase().startsWith(this.searchValue.toLowerCase())) {
-                      return opt;
-                  }
-              }
-          }
       }
   }
 
@@ -572,28 +475,6 @@ findOptionIndex(val: any, opts: any[]): number {
   }
 
   return index;
-}
-
-findOptionGroupIndex(val: any, opts: any[]): any {
-  let groupIndex, itemIndex;
-
-  if (opts) {
-      for (let i = 0; i < opts.length; i++) {
-          groupIndex = i;
-          itemIndex = this.findOptionIndex(val, opts[i].items);
-
-          if (itemIndex !== -1) {
-              break;
-          }
-      }
-  }
-
-  if (itemIndex !== -1) {
-      return {groupIndex: groupIndex, itemIndex: itemIndex};
-  }
-  else {
-      return -1;
-  }
 }
 
 findOption(val: any, opts: any[], inGroup?: boolean) {
@@ -689,10 +570,3 @@ ngOnDestroy() {
   this.onOverlayHide();
 }
 }
-
-@NgModule({
-imports: [CommonModule,SharedModule, FormsModule],
-exports: [DropdownComponent,SharedModule],
-declarations: [DropdownComponent]
-})
-export class DropdownModule { }

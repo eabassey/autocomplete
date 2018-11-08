@@ -3,7 +3,7 @@
 <fs-dropdown [options]="cars"
 optionDisplayProperty="label"
 [selectList]="partners"
-[(ngModel)]="selectedCar2"
+[(ngModel)]="selectedCar"
 [style]="{'width':'150px'}">
 </fs-dropdown>
-<p>Selected Car: {{selectedCar2||'none'}}</p>
+<p>Selected Car: {{selectedCar||'none'}}</p>

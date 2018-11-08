@@ -37,7 +37,7 @@
           </ng-container>
           <ng-template #itemslist let-options let-selectedOption="selectedOption">
             <li *ngFor="let option of options;let i=index" (click)="onItemClick($event, option)">
-              <span>{{option.label||'empty'}}</span>
+              <span>{{option[optionDisplayProperty]||'empty'}}</span>
             </li>
           </ng-template>
 

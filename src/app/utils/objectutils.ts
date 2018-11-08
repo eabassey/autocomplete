@@ -123,18 +123,6 @@ export class ObjectUtils {
         }
     }
 
-    // public generateSelectItems(val: any[], field: string): SelectItem[] {
-    //     let selectItems: SelectItem[];
-    //     if(val && val.length) {
-    //         selectItems = [];
-    //         for(let item of val) {
-    //             selectItems.push({label: this.resolveFieldData(item, field), value: item});
-    //         }
-    //     }
-
-    //     return selectItems;
-    // }
-
     public insertIntoOrderedArray(item: any, index: number, arr: any[], sourceArr: any[]): void {
         if(arr.length > 0) {
             let injected = false;
